@@ -11,5 +11,10 @@ export const corsConfig = cors({
     allowMethods: ["GET"],
     maxAge: 600,
     credentials: true,
-    origin: allowedOrigins,
+    origin: (origin) => {
+        if (!origin) return ""; // disallow if origin is undefined
+        if (allowedOrigins.includes("*")) return "*"; // allow all
+        if (allowedOrigins.includes(origin)) return origin; // allow listed
+        return ""; // disallow
+    },
 });
